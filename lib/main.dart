@@ -20,6 +20,7 @@ class MyAppState extends State<MyApp> {
   String text = "pressed ";
   static const int numQuestions = 5;
   static const int numOptions = 4;
+  int currentQuestion = 0;
   Random random = new Random();
   int num1 = 0;
   int num2 = 0;
@@ -27,6 +28,7 @@ class MyAppState extends State<MyApp> {
   List<int> answers = [];
 
   MyAppState() {
+    currentQuestion = 1;
     num1 = random.nextInt(100) + 11;
     num2 = random.nextInt(100) + 3;
     ans = num1 + num2;
@@ -43,18 +45,21 @@ class MyAppState extends State<MyApp> {
 
   void updateQuestionAnswer() {
     setState(() {
-      num1 = random.nextInt(100) + 11;
-      num2 = random.nextInt(100) + 3;
-      ans = num1 + num2;
-      answers = [];
-      int answerIndex = random.nextInt(numOptions);
-      for (int i = 0; i < numOptions; i++) {
-        int toAdd = random.nextInt(num1 + num2);
-        if (toAdd == ans) toAdd + random.nextInt(10);
-        answers.add(toAdd);
+      if (currentQuestion < numQuestions) {
+        num1 = random.nextInt(100) + 11;
+        num2 = random.nextInt(100) + 3;
+        ans = num1 + num2;
+        answers = [];
+        int answerIndex = random.nextInt(numOptions);
+        for (int i = 0; i < numOptions; i++) {
+          int toAdd = random.nextInt(num1 + num2);
+          if (toAdd == ans) toAdd + random.nextInt(10);
+          answers.add(toAdd);
+        }
+        answers[answerIndex] = ans;
+        print(answers);
       }
-      answers[answerIndex] = ans;
-      print(answers);
+      currentQuestion++;
     });
   }
 
@@ -64,19 +69,25 @@ class MyAppState extends State<MyApp> {
         home: Scaffold(
             appBar: AppBar(title: Text("Math Wiz!")),
             // ignore: prefer_const_literals_to_create_immutables
-            body: Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                  Text(
-                    "Can you solve this??",
-                    style: TextStyle(fontSize: 40, color: Colors.black),
-                    textAlign: TextAlign.center,
-                  ),
-                  Question("$num1 + $num2"),
-                  ...answers
-                      .map((ans) => Option(updateQuestionAnswer, ans))
-                      .toList()
-                ]))));
+            body: currentQuestion <= numQuestions
+                ? Center(
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                        Text(
+                          "Can you solve this??",
+                          style: TextStyle(fontSize: 40, color: Colors.black),
+                          textAlign: TextAlign.center,
+                        ),
+                        Question("$num1 + $num2"),
+                        ...answers
+                            .map((ans) => Option(updateQuestionAnswer, ans))
+                            .toList()
+                      ]))
+                : Center(
+                    child: Text(
+                    "Completed !",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+                  ))));
   }
 }
