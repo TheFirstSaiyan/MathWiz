@@ -1,9 +1,9 @@
 import 'dart:math';
 
-import 'package:first_app/Option.dart';
 import 'package:flutter/material.dart';
 
-import './Question.dart';
+import './Quiz.dart';
+import './Result.dart';
 
 void main() {
   runApp(MyApp());
@@ -26,6 +26,7 @@ class MyAppState extends State<MyApp> {
   int num2 = 0;
   int ans = 0;
   List<int> answers = [];
+  int score = 0;
 
   MyAppState() {
     currentQuestion = 1;
@@ -68,26 +69,8 @@ class MyAppState extends State<MyApp> {
     return MaterialApp(
         home: Scaffold(
             appBar: AppBar(title: Text("Math Wiz!")),
-            // ignore: prefer_const_literals_to_create_immutables
             body: currentQuestion <= numQuestions
-                ? Center(
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                        Text(
-                          "Can you solve this??",
-                          style: TextStyle(fontSize: 40, color: Colors.black),
-                          textAlign: TextAlign.center,
-                        ),
-                        Question("$num1 + $num2"),
-                        ...answers
-                            .map((ans) => Option(updateQuestionAnswer, ans))
-                            .toList()
-                      ]))
-                : Center(
-                    child: Text(
-                    "Completed !",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
-                  ))));
+                ? Quiz(num1, num2, answers, updateQuestionAnswer)
+                : Result("Done")));
   }
 }
