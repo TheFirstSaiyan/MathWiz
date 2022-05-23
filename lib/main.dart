@@ -18,8 +18,8 @@ class MyApp extends StatefulWidget {
 
 class MyAppState extends State<MyApp> {
   String text = "pressed ";
-  static const int numQuestions = 5;
-  static const int numOptions = 4;
+  static const int numQuestions = 10;
+  static const int numOptions = 5;
   int currentQuestion = 0;
   Random random = new Random();
   int num1 = 0;
@@ -44,8 +44,9 @@ class MyAppState extends State<MyApp> {
     print(answers);
   }
 
-  void updateQuestionAnswer() {
+  void updateQuestionAnswer(int chosenAnswer) {
     setState(() {
+      if (num1 + num2 == chosenAnswer) score++;
       if (currentQuestion < numQuestions) {
         num1 = random.nextInt(100) + 11;
         num2 = random.nextInt(100) + 3;
@@ -71,6 +72,6 @@ class MyAppState extends State<MyApp> {
             appBar: AppBar(title: Text("Math Wiz!")),
             body: currentQuestion <= numQuestions
                 ? Quiz(num1, num2, answers, updateQuestionAnswer)
-                : Result("Done")));
+                : Result("You scored ${score * 100 / numQuestions} %")));
   }
 }

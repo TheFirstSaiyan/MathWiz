@@ -5,7 +5,7 @@ import './Option.dart';
 class Quiz extends StatelessWidget {
   final int num1, num2;
   final List<int> answers;
-  final VoidCallback callback;
+  final Function(int) callback;
 
   Quiz(this.num1, this.num2, this.answers, this.callback);
 

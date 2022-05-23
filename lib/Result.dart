@@ -10,7 +10,7 @@ class Result extends StatelessWidget {
     return Center(
         child: Text(
       resultText,
-      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 30),
+      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
     ));
   }
 }
