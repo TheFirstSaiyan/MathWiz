@@ -65,6 +65,26 @@ class MyAppState extends State<MyApp> {
     });
   }
 
+  void startAgain() {
+    setState(() {
+      score = 0;
+      currentQuestion = 1;
+      num1 = random.nextInt(100) + 11;
+      num2 = random.nextInt(100) + 3;
+      ans = num1 + num2;
+      answers = [];
+      int answerIndex = random.nextInt(numOptions);
+      for (int i = 0; i < numOptions; i++) {
+        int toAdd = random.nextInt(num1 + num2);
+        if (toAdd == ans) toAdd + random.nextInt(10);
+        answers.add(toAdd);
+      }
+      answers[answerIndex] = ans;
+      print("$num1 + $num2");
+      print(answers);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -72,6 +92,7 @@ class MyAppState extends State<MyApp> {
             appBar: AppBar(title: Text("Math Wiz!")),
             body: currentQuestion <= numQuestions
                 ? Quiz(num1, num2, answers, updateQuestionAnswer)
-                : Result("You scored ${score * 100 / numQuestions} %")));
+                : Result(
+                    "You scored ${score * 100 / numQuestions} %", startAgain)));
   }
 }
